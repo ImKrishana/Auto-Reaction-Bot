@@ -1,33 +1,53 @@
 const EMOJIS = [
-  "👍","❤️","🔥","🥰","👏","😁","🤔","🤯","😱","😢",
-  "🎉","🤩","🙏","👌","🕊","🤡","🥱","🥴","😍","🤷‍♂️",
-  "❤️‍🔥","🌚","💯","🤣","⚡","🏆","🗿","😐","🤨","🍾",
-  "💋","😈","😴","😭","🤓","👻","👨‍💻","👀","🙈","🤷‍♀️",
-  "😇","🤝","✍️","🤗","🫡","😨","🧑‍🎄","🎄","⛄","🤪",
-  "🆒","💘","🙊","🦄","😘","🙉","💊","😎","👾","🤷"
+  "👍", "❤️", "🔥", "🥰", "👏", "😁", "🤔", "🤯", "😱", "😢",
+  "🎉", "🤩", "🙏", "👌", "🕊", "🤡", "🥱", "🥴", "😍", "🤷‍♂️",
+  "❤️‍🔥", "🌚", "💯", "🤣", "⚡", "🏆", "🗿", "😐", "🤨", "🍾",
+  "💋", "😈", "😴", "😭", "🤓", "👻", "👨‍💻", "👀", "🙈", "🤷‍♀️",
+  "😇", "🤝", "✍️", "🤗", "🫡", "😨", "🧑‍🎄", "🎄", "⛄", "🤪",
+  "🆒", "💘", "🙊", "🦄", "😘", "🙉", "💊", "😎", "👾", "🤷"
 ];
 
 export default {
   async fetch(request, env) {
-    const u = await request.json();
-    if (!u.message) return new Response("ok");
+    if (request.method !== "POST") {
+      return new Response("OK");
+    }
 
-    const m = u.message;
-    const c = m.chat.id;
-    const mid = m.message_id;
+    try {
+      const update = await request.json();
 
-    const emoji = EMOJIS[Math.floor(Math.random() * EMOJIS.length)];
+      if (!update.message) {
+        return new Response("OK");
+      }
 
-    await fetch(`https://api.telegram.org/bot${env.BOT_TOKEN}/setMessageReaction`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        chat_id: c,
-        message_id: mid,
-        reaction: [{ type: "emoji", emoji }]
-      })
-    });
+      const { chat, message_id } = update.message;
+      const emoji = EMOJIS[Math.floor(Math.random() * EMOJIS.length)];
 
-    return new Response("ok");
+      await fetch(
+        `https://api.telegram.org/bot${env.BOT_TOKEN}/setMessageReaction`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            chat_id: chat.id,
+            message_id,
+            reaction: [
+              {
+                type: "emoji",
+                emoji
+              }
+            ]
+          })
+        }
+      );
+
+      return new Response("OK");
+    } catch {
+      return new Response("Internal Server Error", {
+        status: 500
+      });
+    }
   }
 };
