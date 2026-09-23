@@ -1,29 +1,94 @@
-# Auto Reaction Bot No Hosting 
-
-- **Telegram Bot that automatically reacts to posts in telegram channels, groups, and private messages**.
-- **Lightweight and Serverless**: Built on Cloudflare Workers, the bot is serverless, efficient, and no hosting platform required.
-
 ## Deployment
 
-**Step 1** : Create a Cloudflare Account 
+<details>
+<summary><strong>Method 1: One Click Deploy</strong></summary>
 
-**Step 2** : Go to Workers & Pages Tab, and Click on Create Worker and Choose a Sub Domain
+### Step 1: Click the button below
 
-**Step 3** : Copy code from Repo's react.js file and Paste it
+[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/ImKrishana/Auto-Reaction-Bot)
 
-**Step 4** : Add the `BOT_TOKEN` Secret:
-    - Go back to your worker's dashboard.
-    - Click on the **Settings** tab, then select **Variables**.
-    - Under **Environment Variables**, click **Add variable**.
-    - Enter `BOT_TOKEN` as the **Variable name** and paste your Telegram bot token as the **Value**.
+### Step 2: Set BOT_TOKEN
 
-**Step 5** : Click on Deploy and your Site is Ready !
+After creating the Worker, go to:
 
-### Step 5: Webhook Setup
+`Settings → Variables and Secrets`
+
+Add a **Secret**:
+
+```text
+Name: BOT_TOKEN
+Value: YOUR_TELEGRAM_BOT_TOKEN
+```
+
+### Step 3: Set Webhook
+
+Replace `YOUR_BOT_TOKEN` and `YOUR_WORKER_URL`:
 
 ```bash
-https://api.telegram.org/bot<BOT_TOKEN>/setWebhook?url=<YOUR_WORKER_URL>
+curl "https://api.telegram.org/botYOUR_BOT_TOKEN/setWebhook?url=YOUR_WORKER_URL"
 ```
-Replace the placeholders:
-- `<BOT_TOKEN>` - Your bot token from BotFather
-- `<YOUR_WORKER_URL>` - Your deployed Cloudflare Worker URL.
+
+Example:
+
+```bash
+curl "https://api.telegram.org/bot123456:ABCDEF/setWebhook?url=https://your-worker.workers.dev"
+```
+
+</details>
+
+<details>
+<summary><strong>Method 2: Manual Deployment</strong></summary>
+
+### Step 1: Create a Cloudflare Account
+
+Create a Cloudflare account and log in to the dashboard.
+
+### Step 2: Create a Worker
+
+Go to **Workers & Pages**, click **Create Worker**, and choose a subdomain.
+
+### Step 3: Add the Code
+
+Open the repository's `react.js` file, copy the code, and paste it into your Worker.
+
+### Step 4: Add BOT_TOKEN Secret
+
+Go back to your Worker's dashboard.
+
+Go to:
+
+`Settings → Variables and Secrets`
+
+Under **Secrets**, add:
+
+```text
+Name: BOT_TOKEN
+Value: YOUR_TELEGRAM_BOT_TOKEN
+```
+
+### Step 5: Deploy
+
+Click **Deploy**.
+
+Your Worker is now ready.
+
+### Step 6: Set Webhook
+
+Replace `YOUR_BOT_TOKEN` and `YOUR_WORKER_URL`:
+
+```bash
+curl "https://api.telegram.org/botYOUR_BOT_TOKEN/setWebhook?url=YOUR_WORKER_URL"
+```
+
+</details>
+
+## Xtra
+
+Live bot can be found here
+
+**Demo Bot:** [@AutomaticReactsRoBot](https://t.me/AutomaticReactsRoBot)
+
+---
+
+[![License](https://img.shields.io/github/license/ImKrishana/Auto-Reaction-Bot)](https://github.com/ImKrishana/Auto-Reaction-Bot/blob/main/LICENSE)
+[![Telegram](https://img.shields.io/badge/Telegram-26A5E4?logo=telegram&logoColor=white)](https://t.me/TheZake)
